@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnitMatrix</title>
+    <style>
+        /* --- BRAND METRIC PALETTE (Graphite, Dim Grey, Camel, Silver, Toffee) --- */
+        body {
+            background-color: #1f1c1d; /* Deep backdrop layout accent */
+            color: #C0B7B1; /* Silver base typography */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #C69C72; /* Premium Camel Title Accent */
+            font-size: 2.6rem;
+            margin-bottom: 30px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .main-wrapper {
+            display: flex;
+            gap: 24px;
+            max-width: 950px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .container, .history-container, .about-card {
+            background-color: #433E3F; /* Pure Matte Graphite Panels */
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #7A7265; /* Clean Dim Grey Boundaries */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+        }
+
+        .container {
+            flex: 1.5;
+            min-width: 320px;
+        }
+
+        .history-container {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-items-box {
+            max-height: 420px;
+            overflow-y: auto; /* Handles massive conversions via clean vertical scrolls */
+            overflow-x: hidden;
+            padding-right: 4px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h2, h3 {
+            color: #C69C72; /* Camel Accent for Panel Subheadings */
+            margin: 0;
+            font-weight: 700;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin: 12px 0;
+            background-color: #1f1c1d;
+            color: #f4f4f5;
+            border: 1px solid #7A7265;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #C69C72;
+        }
+
+        .flex-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .flex-row select {
+            margin: 0;
+        }
+
+        button.convert-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #8E6E53; /* Toffee Brown Call-To-Action */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 15px;
+        }
+
+        button.convert-btn:hover {
+            background-color: #765b44;
+        }
+
+        button.convert-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* --- IMMUTABLE RESULT BOX LINE BREAK WRAPPING --- */
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1f1c1d;
+            border-left: 4px solid #C69C72;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-title-line {
+            color: #C0B7B1;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .result-data-scroll {
+            display: block;
+            color: #ffffff;
+            font-weight: 700;
+            overflow-x: auto; /* Isolated slider engine for long binary strings */
+            white-space: nowrap;
+            padding-bottom: 4px;
+        }
+
+        /* --- PREMIUM CONSTRUCTED HISTORY ITEMS --- */
+        .history-item {
+            padding: 12px;
+            background-color: #1f1c1d;
+            border-left: 3px solid #8E6E53;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .history-content {
+            display: flex;
+            flex-direction: column;
+            overflow-x: auto; /* Horizontal slider wrapper for safe numbers inside history */
+            white-space: nowrap;
+            margin-right: 8px;
+            width: 85%;
+            padding-bottom: 2px;
+        }
+
+        .history-label {
+            color: #a1a1aa;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .history-value {
+            color: #C69C72;
+            font-weight: bold;
+        }
+
+        .copy-btn {
+            background-color: transparent;
+            border: none;
+            color: #a1a1aa;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: #27272a;
+            transform: scale(1.1);
+        }
+
+        .clear-btn {
+            background-color: transparent;
+            color: #dc2626;
+            border: 1px solid #dc2626;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .clear-btn:hover {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        /* --- ADVANCED TEXT SCROLLBAR TWEAKS --- */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f1c1d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7A7265;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C69C72;
+        }
+
+        /* --- BRAND IDENTIFIERS SECTION --- */
+        .about-section {
+            margin-top: 50px;
+            max-width: 950px;
+            width: 100%;
+        }
+
+        .about-intro {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .about-intro p {
+            font-size: 1.05rem;
+            color: #C0B7B1;
+            line-height: 1.6;
+        }
+
+        .about-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .about-card {
+            flex: 1;
+            min-width: 280px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .about-card p {
+            font-size: 0.95rem;
+            color: #a1a1aa;
+            margin: 15px 0 25px 0;
+            line-height: 1.5;
+        }
+
+        .credit-link {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background-color: #1f1c1d;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            margin-top: auto;
+            box-sizing: border-box;
+        }
+
+        /* Instagram Glow Outline Engine */
+        .insta-outline {
+            border: 2px solid transparent;
+            background: linear-gradient(#1f1c1d, #1f1c1d) padding-box,
+                        linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) border-box;
+        }
+        .insta-outline:hover {
+            box-shadow: 0 0 10px rgba(220, 39, 67, 0.4);
+        }
+
+        /* Gemini Space Glow Outline Engine */
+        .gemini-outline {
+            border: 2px solid transparent;
+            background: linear-gradient(#1f1c1d, #1f1c1d) padding-box,
+                        linear-gradient(90deg, #1fa2ff, #12d8fa, #a6ffcb) border-box;
+        }
+        .gemini-outline:hover {
+            box-shadow: 0 0 10px rgba(18, 216, 250, 0.4);
+        }
+
+        /* MDN Corporate Branding Engine */
+        .mdn-outline {
+            border: 2px solid #83B8ED;
+        }
+        .mdn-outline:hover {
+            background-color: #2e2a2c;
+            border-color: #C69C72;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Unit Matrix</h1>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <h2>Converter</h2>
+            <form method="POST" id="main_converter_form" autocomplete="off">
+                <select name="category" id="category" onchange="updateDropdowns(false)">
+                    <option value="length" {% if remember_cat == 'length' %}selected{% endif %}>📏 Length</option>
+                    <option value="weight" {% if remember_cat == 'weight' %}selected{% endif %}>⚖️ Weight</option>
+                    <option value="temp" {% if remember_cat == 'temp' %}selected{% endif %}>🌡️ Temperature</option>
+                    <option value="num" {% if remember_cat == 'num' %}selected{% endif %}>💻 Number Systems</option>
+                </select>
+
+                <input type="text" name="value" id="val_input" placeholder="Enter your value..." value="{{ remember_val }}" required oninput="enforceLimits()">
+
+                <div class="flex-row">
+                    <select name="from_unit" id="from_unit" onchange="enforceLimits()"></select>
+                    <span>to</span>
+                    <select name="to_unit" id="to_unit"></select>
+                </div>
+
+                <button type="submit" class="convert-btn">Convert</button>
+            </form>
+
+            {% if result is not none %}
+            <div class="result-box">
+                {% if 'Error' in result|string %}
+                    <span style="color: #dc2626; font-weight: bold;">{{ result }}</span>
+                {% else %}
+                    <span class="result-title-line">Converted {{ remember_from }} to {{ remember_to }}:</span>
+                    <span class="result-data-scroll"><strong>{{ result }}</strong></span>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="history-container">
+            <div class="history-header">
+                <h2>History</h2>
+                <form method="POST" style="margin: 0;" onsubmit="syncClearForm()">
+                    <input type="hidden" name="action" value="clear">
+                    <input type="hidden" name="category" id="clear_cat">
+                    <input type="hidden" name="from_unit" id="clear_from">
+                    <input type="hidden" name="to_unit" id="clear_to">
+                    <input type="hidden" name="value" id="clear_val">
+                    <button type="submit" class="clear-btn">Clear</button>
+                </form>
+            </div>
+
+            <div class="history-items-box">
+                {% if history %}
+                    {% for item in history %}
+                        <div class="history-item">
+                            <div class="history-content">
+                                <span class="history-label">{{ item.label }} {{ item.input_val }}</span>
+                                <span class="history-value">{{ item.output_val }}</span>
+                            </div>
+                            <button type="button" class="copy-btn" onclick="copyResult('{{ item.output_val }}', this)" title="Copy Result">📋</button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: #71717a; font-size: 0.95rem; margin: 0;">No recent conversions.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <div class="about-intro">
+            <h2>About This Project</h2>
+            <p>UnitMatrix is a hobby project created by <strong>Swapnil Karki</strong>. It is designed to be fast and a responsive tool for converting physical and mathematical units.</p>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>Backend</h3>
+                <p>The core logic, and server routing were written in <strong>Python</strong> by Swapnil Karki, with partial help of the AI tool Gemini.</p>
+                <a href="https://www.instagram.com/known_as_swapnil/" target="_blank" class="credit-link insta-outline">My Instagram</a>
+            </div>
+            <div class="about-card">
+                <h3>Frontend</h3>
+                <p>The user interface and logic constraints were generated completely using AI.</p>
+                <a href="https://gemini.google.com" target="_blank" class="credit-link gemini-outline">Google Gemini</a>
+            </div>
+            <div class="about-card">
+                <h3>References</h3>
+                <p>HTML attributes and logic rules were referenced and verified via Mozilla Developer Network.</p>
+                <a href="https://developer.mozilla.org/" target="_blank" class="credit-link mdn-outline">MDN Web Docs</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const unitData = {
+            length: {
+                options: [
+                    {val: 'km', text: 'Kilometers'},
+                    {val: 'm', text: 'Meters'},
+                    {val: 'cm', text: 'Centimeters'},
+                    {val: 'mm', text: 'Millimeters'}
+                ]
+            },
+            weight: {
+                options: [
+                    {val: 't', text: 'Tonnes'},
+                    {val: 'kg', text: 'Kilograms'},
+                    {val: 'g', text: 'Grams'},
+                    {val: 'mg', text: 'Milligrams'}
+                ]
+            },
+            temp: {
+                options: [
+                    {val: 'c', text: 'Celsius'},
+                    {val: 'f', text: 'Fahrenheit'},
+                    {val: 'k', text: 'Kelvin'}
+                ]
+            },
+            num: {
+                options: [
+                    {val: 'dec', text: 'Decimal (Base 10)'},
+                    {val: 'bin', text: 'Binary (Base 2)'},
+                    {val: 'hex', text: 'Hexadecimal (Base 16)'}
+                ]
+            }
+        };
+
+        const defaultPairs = {
+            'length': { from: 'km', to: 'm' },
+            'weight': { from: 't', to: 'kg' },
+            'temp': { from: 'c', to: 'f' },
+            'num': { from: 'dec', to: 'bin' }
+        };
+
+        const rememberCat = "{{ remember_cat }}";
+        const rememberFrom = "{{ remember_from }}";
+        const rememberTo = "{{ remember_to }}";
+
+        function updateDropdowns(isInitialLoad) {
+            const cat = document.getElementById('category').value;
+            const fromSelect = document.getElementById('from_unit');
+            const toSelect = document.getElementById('to_unit');
+
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+
+            let targetFrom, targetTo;
+
+            if (isInitialLoad && cat === rememberCat) {
+                targetFrom = rememberFrom;
+                targetTo = rememberTo;
+            } else {
+                targetFrom = defaultPairs[cat].from;
+                targetTo = defaultPairs[cat].to;
+            }
+
+            unitData[cat].options.forEach(opt => {
+                let fromOpt = new Option(opt.text, opt.val);
+                let toOpt = new Option(opt.text, opt.val);
+
+                if (opt.val === targetFrom) fromOpt.selected = true;
+                if (opt.val === targetTo) toOpt.selected = true;
+
+                fromSelect.add(fromOpt);
+                toSelect.add(toOpt);
+            });
+
+            if (!isInitialLoad) {
+                document.getElementById('val_input').value = '';
+            }
+            enforceLimits();
+        }
+
+        function enforceLimits() {
+            const cat = document.getElementById('category').value;
+            const fromUnit = document.getElementById('from_unit').value;
+            const inputField = document.getElementById('val_input');
+            let val = inputField.value;
+
+            if (cat === 'num') {
+                if (fromUnit === 'bin') {
+                    inputField.value = val.replace(/[^01]/g, '');
+                } else if (fromUnit === 'dec') {
+                    inputField.value = val.replace(/[^0-9]/g, '');
+                } else if (fromUnit === 'hex') {
+                    inputField.value = val.replace(/[^0-9a-fA-F]/g, '');
+                }
+            } else if (['length', 'weight'].includes(cat)) {
+                inputField.value = val.replace(/[^0-9.]/g, '');
+                const parts = inputField.value.split('.');
+                if (parts.length > 2) {
+                    inputField.value = parts[0] + '.' + parts.slice(1).join('');
+                }
+            } else if (cat === 'temp') {
+                let isNegative = val.startsWith('-');
+                let clean = val.replace(/[^0-9.]/g, '');
+                const parts = clean.split('.');
+                if (parts.length > 2) {
+                    clean = parts[0] + '.' + parts.slice(1).join('');
+                }
+                inputField.value = (isNegative ? '-' : '') + clean;
+            }
+        }
+
+        function copyResult(textToCopy, btnElement) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = btnElement.innerText;
+                btnElement.innerText = '✅';
+                setTimeout(() => { btnElement.innerText = originalText; }, 1200);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        function syncClearForm() {
+            document.getElementById('clear_cat').value = document.getElementById('category').value;
+            document.getElementById('clear_from').value = document.getElementById('from_unit').value;
+            document.getElementById('clear_to').value = document.getElementById('to_unit').value;
+            document.getElementById('clear_val').value = document.getElementById('val_input').value;
+        }
+
+        window.onload = function() {
+            updateDropdowns(true);
+        };
+    </script>
+</body>
+</html>
