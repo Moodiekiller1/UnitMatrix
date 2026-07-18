@@ -3,83 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UnitMatrix</title>
+    <title>UnitMatrix V3.0</title>
     <style>
         :root {
-            color-scheme: dark;
-            --bg: #151313;
-            --bg-soft: #1f1c1d;
-            --panel: rgba(67, 62, 63, 0.76);
-            --panel-solid: #433e3f;
-            --panel-strong: rgba(31, 28, 29, 0.92);
-            --line: rgba(192, 183, 177, 0.22);
-            --line-strong: #7a7265;
-            --text: #f5f1ed;
-            --muted: #c0b7b1;
-            --quiet: #9a9290;
-            --accent: #d5a474;
-            --accent-strong: #9b7658;
-            --accent-soft: rgba(213, 164, 116, 0.16);
-            --danger: #ef4444;
-            --success: #66d19e;
-            --shadow: 0 22px 70px rgba(0, 0, 0, 0.42);
             --radius: 8px;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
+        /* Theme: Professional Dark */
+        body[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: #121212;
+            --bg-soft: #181818;
+            --panel: rgba(30, 30, 30, 0.85);
+            --panel-solid: #1e1e1e;
+            --panel-strong: #151515;
+            --line: rgba(255, 255, 255, 0.1);
+            --line-strong: rgba(255, 255, 255, 0.25);
+            --text: #e0e0e0;
+            --muted: #a0a0a0;
+            --quiet: #707070;
+            --accent: #5e9cf9;
+            --accent-strong: #3b82f6;
+            --accent-soft: rgba(94, 156, 249, 0.15);
+            --danger: #ef4444;
+            --success: #10b981;
+            font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 100%);
+        }
+
+        /* Theme: Professional Light */
         body[data-theme="light"] {
             color-scheme: light;
-            --bg: #f2eee8;
-            --bg-soft: #fffaf4;
-            --panel: rgba(255, 255, 255, 0.78);
+            --bg: #f8fafc;
+            --bg-soft: #f1f5f9;
+            --panel: rgba(255, 255, 255, 0.9);
             --panel-solid: #ffffff;
-            --panel-strong: rgba(255, 250, 244, 0.96);
-            --line: rgba(70, 61, 55, 0.18);
-            --line-strong: #b8aa9f;
-            --text: #211d1b;
-            --muted: #554c47;
-            --quiet: #766d66;
-            --accent: #9b6845;
-            --accent-strong: #815436;
-            --accent-soft: rgba(155, 104, 69, 0.13);
-            --danger: #c92828;
-            --success: #187449;
-            --shadow: 0 18px 54px rgba(90, 64, 43, 0.18);
+            --panel-strong: #f8fafc;
+            --line: rgba(0, 0, 0, 0.08);
+            --line-strong: rgba(0, 0, 0, 0.2);
+            --text: #0f172a;
+            --muted: #475569;
+            --quiet: #94a3b8;
+            --accent: #2563eb;
+            --accent-strong: #1d4ed8;
+            --accent-soft: rgba(37, 99, 235, 0.1);
+            --danger: #dc2626;
+            --success: #059669;
+            --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 100%);
         }
 
-        * {
-            box-sizing: border-box;
+        /* Theme: Matrix POV */
+        body[data-theme="Matrix"] {
+            color-scheme: dark;
+            --bg: #020802;
+            --bg-soft: #051205;
+            --panel: rgba(5, 15, 5, 0.85);
+            --panel-solid: #051205;
+            --panel-strong: #020802;
+            --line: #1f4d1f;
+            --line-strong: #33ff33;
+            --text: #d4ffd4;
+            --muted: #66cc66;
+            --quiet: #398c39;
+            --accent: #33ff33;
+            --accent-strong: #00cc00;
+            --accent-soft: rgba(51, 255, 51, 0.15);
+            --danger: #ff3333;
+            --success: #33ff33;
+            --shadow: 0 0 20px rgba(51, 255, 51, 0.15);
+            font-family: "Consolas", "Courier New", Courier, monospace;
+            background: var(--bg);
         }
 
-        html {
-            min-height: 100%;
+        /* Matrix Scanline Effects */
+        body[data-theme="Matrix"]::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 9999;
         }
 
+        * { box-sizing: border-box; }
+        html { min-height: 100%; }
         body {
             min-height: 100vh;
             margin: 0;
-            background:
-                radial-gradient(circle at top left, rgba(213, 164, 116, 0.16), transparent 32rem),
-                linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 100%);
             color: var(--text);
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
         }
+        body.modal-open { overflow: hidden; }
 
-        body.modal-open {
-            overflow: hidden;
-        }
-
-        button, input, select {
-            font: inherit;
-        }
-
-        button {
-            cursor: pointer;
-        }
+        button, input, select, optgroup { font: inherit; }
+        button { cursor: pointer; }
 
         .page-shell {
-            width: min(1180px, calc(100% - 32px));
+            width: min(1280px, calc(100% - 40px));
             margin: 0 auto;
-            padding: 34px 0 26px;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .topbar {
@@ -87,77 +117,47 @@
             justify-content: space-between;
             align-items: center;
             gap: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
-
-        .brand-block {
-            min-width: 0;
-        }
-
+        .brand-block { min-width: 0; }
         h1 {
             margin: 0;
             color: var(--accent);
-            font-size: clamp(2.2rem, 6vw, 4.5rem);
-            line-height: 0.95;
+            font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 900;
-            letter-spacing: 0;
+            letter-spacing: -0.03em;
         }
+        .tagline { margin: 8px 0 0; color: var(--muted); font-size: 1.05rem; }
 
-        .tagline {
-            margin: 10px 0 0;
-            color: var(--muted);
-            font-size: 1rem;
-        }
-
-        .top-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .icon-btn,
-        .ghost-btn,
-        .clear-btn,
-        .copy-btn,
-        .modal-close,
-        .quick-swap {
+        .top-actions { display: flex; gap: 12px; align-items: center; }
+        .icon-btn, .ghost-btn, .clear-btn, .copy-btn, .modal-close, .quick-swap {
             border: 1px solid var(--line);
             background: var(--panel);
             color: var(--text);
             border-radius: var(--radius);
-            transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 10;
         }
-
-        .icon-btn,
-        .modal-close,
-        .quick-swap,
-        .copy-btn {
+        .icon-btn, .modal-close, .quick-swap, .copy-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }
-
-        .icon-btn {
-            width: 42px;
-            height: 42px;
-            font-size: 1.1rem;
-        }
-
-        .icon-btn:hover,
-        .ghost-btn:hover,
-        .quick-swap:hover,
-        .copy-btn:hover,
-        .modal-close:hover {
-            transform: translateY(-1px);
+        .icon-btn { width: 46px; height: 46px; font-size: 1.2rem; }
+        .icon-btn:hover, .ghost-btn:hover, .quick-swap:hover, .copy-btn:hover, .modal-close:hover {
+            transform: translateY(-2px);
             border-color: var(--accent);
             background: var(--accent-soft);
+            color: var(--accent);
         }
 
         .main-wrapper {
             display: grid;
-            grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.8fr);
-            gap: 22px;
+            grid-template-columns: minmax(0, 1.6fr) minmax(360px, 1fr);
+            gap: 30px;
             align-items: stretch;
+            flex: 1;
         }
 
         .panel {
@@ -165,12 +165,10 @@
             border: 1px solid var(--line);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            backdrop-filter: blur(18px);
-        }
-
-        .converter-panel,
-        .history-panel {
-            padding: clamp(20px, 3vw, 30px);
+            backdrop-filter: blur(20px);
+            padding: clamp(24px, 4vw, 40px);
+            display: flex;
+            flex-direction: column;
         }
 
         .panel-heading {
@@ -178,461 +176,237 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 16px;
-            margin-bottom: 22px;
+            margin-bottom: 30px;
         }
+        h2 { margin: 0; color: var(--text); font-size: 1.6rem; font-weight: 800; }
+        .panel-subtitle { margin: 6px 0 0; color: var(--quiet); font-size: 0.95rem; }
 
-        h2 {
-            margin: 0;
-            color: var(--accent);
-            font-size: 1.45rem;
-            font-weight: 800;
-            letter-spacing: 0;
-        }
-
-        .panel-subtitle {
-            margin: 5px 0 0;
-            color: var(--quiet);
-            font-size: 0.92rem;
-        }
-
-        .field {
-            margin-bottom: 16px;
-        }
-
+        .field { margin-bottom: 24px; }
         .field label {
             display: block;
-            margin-bottom: 7px;
+            margin-bottom: 8px;
             color: var(--muted);
-            font-size: 0.84rem;
+            font-size: 0.9rem;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        select,
-        input[type="text"] {
+        select, input[type="text"] {
             width: 100%;
-            min-height: 52px;
-            padding: 0 14px;
-            border: 1px solid var(--line);
+            min-height: 56px;
+            padding: 0 16px;
+            border: 2px solid var(--line);
             border-radius: var(--radius);
             background: var(--panel-strong);
             color: var(--text);
+            font-size: 1.1rem;
             outline: none;
-            transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+            transition: all 0.2s ease;
         }
-
-        select:focus,
-        input[type="text"]:focus {
+        select:focus, input[type="text"]:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 4px var(--accent-soft);
         }
 
         .unit-row {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
-            gap: 12px;
+            grid-template-columns: minmax(0, 1fr) 52px minmax(0, 1fr);
+            gap: 16px;
             align-items: end;
         }
-
         .quick-swap {
-            width: 48px;
-            height: 52px;
-            margin-bottom: 16px;
-            font-size: 1.28rem;
+            width: 52px;
+            height: 56px;
+            margin-bottom: 24px;
+            font-size: 1.4rem;
             font-weight: 800;
         }
 
         .convert-btn {
             width: 100%;
-            min-height: 54px;
-            margin-top: 4px;
+            min-height: 60px;
+            margin-top: 10px;
             border: 0;
             border-radius: var(--radius);
-            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            background: var(--accent-strong);
             color: #ffffff;
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             font-weight: 800;
-            transition: transform 0.16s ease, filter 0.16s ease, box-shadow 0.16s ease;
-            box-shadow: 0 12px 30px rgba(142, 110, 83, 0.28);
+            transition: all 0.2s ease;
         }
-
-        .convert-btn:hover {
-            filter: brightness(1.06);
-            transform: translateY(-1px);
-        }
-
-        .convert-btn:active,
-        .quick-swap:active,
-        .icon-btn:active {
-            transform: translateY(0) scale(0.98);
-        }
+        .convert-btn:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-soft); }
+        .convert-btn:active { transform: translateY(0) scale(0.98); }
 
         .client-error {
             display: none;
-            margin: -4px 0 14px;
+            margin: -10px 0 20px;
             color: var(--danger);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 700;
         }
-
-        .client-error.is-visible {
-            display: block;
-        }
+        .client-error.is-visible { display: block; }
 
         .result-box {
-            margin-top: 20px;
-            padding: 16px;
+            margin-top: auto;
+            padding: 24px;
             border: 1px solid var(--line);
-            border-left: 4px solid var(--accent);
+            border-left: 5px solid var(--accent);
             border-radius: var(--radius);
             background: var(--panel-strong);
+            animation: slideUp 0.3s ease;
         }
-
-        .result-box.error {
-            border-left-color: var(--danger);
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .result-title-line {
-            display: block;
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-
+        .result-box.error { border-left-color: var(--danger); }
+        .result-title-line { display: block; color: var(--muted); font-size: 0.95rem; margin-bottom: 12px; }
         .result-data-scroll {
             display: block;
             overflow-x: auto;
             white-space: nowrap;
             color: var(--text);
-            font-size: clamp(1.15rem, 4vw, 1.45rem);
-            font-weight: 850;
-            padding-bottom: 4px;
-        }
-
-        .history-panel {
-            min-height: 100%;
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .ghost-btn,
-        .clear-btn {
-            min-height: 38px;
-            padding: 0 12px;
-            font-size: 0.86rem;
+            font-size: clamp(1.4rem, 4vw, 2rem);
             font-weight: 800;
+            padding-bottom: 6px;
         }
 
-        .clear-btn {
-            color: var(--danger);
-        }
-
-        .clear-btn:hover {
-            background: rgba(239, 68, 68, 0.12);
-            border-color: var(--danger);
-        }
+        .history-actions { display: flex; gap: 10px; align-items: center; justify-content: flex-end; }
+        .ghost-btn, .clear-btn { min-height: 42px; padding: 0 16px; font-size: 0.9rem; font-weight: 700; }
+        .clear-btn { color: var(--danger); }
+        .clear-btn:hover { background: rgba(239, 68, 68, 0.15); border-color: var(--danger); }
 
         .history-items-box {
             display: grid;
-            gap: 10px;
-            max-height: 488px;
+            gap: 12px;
+            max-height: 520px;
             overflow-y: auto;
-            padding-right: 4px;
+            padding-right: 6px;
         }
-
         .history-item {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 36px;
-            gap: 10px;
+            grid-template-columns: minmax(0, 1fr) 42px;
+            gap: 12px;
             align-items: center;
-            padding: 12px;
+            padding: 16px;
             border: 1px solid var(--line);
             border-left: 3px solid var(--accent);
             border-radius: var(--radius);
             background: var(--panel-strong);
+            transition: transform 0.2s;
         }
-
-        .history-content {
-            min-width: 0;
-        }
-
-        .history-label,
-        .history-meta,
-        .history-value {
+        .history-item:hover { transform: translateX(4px); border-color: var(--accent); }
+        .history-content { min-width: 0; }
+        .history-label, .history-meta, .history-value {
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .history-label { color: var(--quiet); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+        .history-meta { margin-top: 6px; color: var(--muted); font-size: 0.88rem; }
+        .history-value { margin-top: 6px; color: var(--text); font-weight: 800; font-size: 1.05rem; }
+        .copy-btn { width: 42px; height: 42px; font-size: 1.1rem; }
 
-        .history-label {
-            color: var(--quiet);
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
+        .empty-state { margin: 0; color: var(--quiet); font-size: 1rem; }
 
-        .history-meta {
-            margin-top: 4px;
-            color: var(--muted);
-            font-size: 0.82rem;
-        }
-
-        .history-value {
-            margin-top: 5px;
-            color: var(--accent);
-            font-weight: 850;
-        }
-
-        .copy-btn {
-            width: 36px;
-            height: 36px;
-            font-size: 0.98rem;
-        }
-
-        .empty-state {
-            margin: 0;
-            color: var(--quiet);
-            font-size: 0.94rem;
-        }
-
+        /* V3.0 FOOTER LAYOUT */
         .site-footer {
-            margin-top: 24px;
-            padding: 16px 0 4px;
+            margin-top: 50px;
+            padding-top: 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 14px;
-            color: var(--quiet);
-            font-size: 0.9rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 10px;
+            gap: 20px;
             flex-wrap: wrap;
-            justify-content: flex-end;
+            border-top: 1px solid var(--line);
         }
-
-        .footer-link {
-            display: inline-flex;
+        .footer-brand {
+            display: flex;
             align-items: center;
-            gap: 7px;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 800;
+            gap: 12px;
+            padding: 10px 16px;
+            background: var(--panel-strong);
             border: 1px solid var(--line);
             border-radius: var(--radius);
-            padding: 8px 10px;
-            background: var(--panel);
-            transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
+        }
+        .brand-name { color: var(--text); font-weight: 800; font-size: 1rem; }
+        .brand-version { color: var(--accent); font-weight: 900; font-size: 1rem; padding-left: 12px; border-left: 2px solid var(--line); }
+
+        .footer-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
         }
 
-        .footer-link:hover {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-            transform: translateY(-1px);
+        .footer-links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+        .footer-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--text); text-decoration: none; font-weight: 700; font-size: 0.9rem;
+            border: 1px solid var(--line); border-radius: var(--radius);
+            padding: 10px 14px; background: var(--panel);
+            transition: all 0.2s ease;
+            cursor: pointer;
         }
-
-        .footer-link svg {
-            width: 17px;
-            height: 17px;
-            fill: currentColor;
-        }
+        .footer-link:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--accent-soft); border-color: var(--accent); color: var(--accent); text-decoration: underline; cursor: pointer; }
 
         .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            z-index: 50;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.58);
+            position: fixed; inset: 0; z-index: 100;
+            display: none; align-items: center; justify-content: center;
+            padding: 20px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);
         }
-
-        .modal-backdrop.is-open {
-            display: flex;
-        }
-
+        .modal-backdrop.is-open { display: flex; }
         .modal-card {
-            width: min(720px, 100%);
-            max-height: min(760px, calc(100vh - 40px));
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            background: var(--panel-solid);
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            width: min(760px, 100%); max-height: min(800px, calc(100vh - 40px));
+            overflow: hidden; display: flex; flex-direction: column;
+            background: var(--panel-solid); border: 1px solid var(--line);
+            border-radius: var(--radius); box-shadow: var(--shadow);
         }
-
         .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--line);
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            padding: 24px; border-bottom: 1px solid var(--line);
         }
+        .modal-header p { margin: 6px 0 0; color: var(--quiet); font-size: 0.95rem; }
+        .modal-close { width: 42px; height: 42px; font-size: 1.4rem; flex: 0 0 auto; }
+        .modal-body { padding: 24px; overflow-y: auto; }
 
-        .modal-header p {
-            margin: 4px 0 0;
-            color: var(--quiet);
-            font-size: 0.92rem;
-        }
-
-        .modal-close {
-            width: 38px;
-            height: 38px;
-            font-size: 1.25rem;
-            flex: 0 0 auto;
-        }
-
-        .modal-body {
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .settings-grid {
-            display: grid;
-            gap: 18px;
-        }
-
-        .settings-card {
-            padding: 16px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: var(--panel-strong);
-        }
-
-        .settings-card h3 {
-            margin: 0 0 10px;
-            color: var(--accent);
-            font-size: 1rem;
-        }
-
-        .segmented {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-
+        .settings-grid { display: grid; gap: 24px; }
+        .settings-card { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-strong); }
+        .settings-card h3 { margin: 0 0 16px; color: var(--text); font-size: 1.1rem; }
+        .segmented { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .segmented button {
-            min-height: 40px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: transparent;
-            color: var(--text);
-            font-weight: 800;
+            min-height: 46px; border: 2px solid var(--line); border-radius: var(--radius);
+            background: transparent; color: var(--muted); font-weight: 800; transition: all 0.2s;
         }
+        .segmented button.is-active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+        .segmented button:hover:not(.is-active) { border-color: var(--line-strong); color: var(--text); }
 
-        .segmented button.is-active {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-            color: var(--accent);
-        }
-
-        .range-row {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 46px;
-            gap: 12px;
-            align-items: center;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--accent);
-        }
-
+        .range-row { display: grid; grid-template-columns: minmax(0, 1fr) 52px; gap: 16px; align-items: center; }
+        input[type="range"] { width: 100%; accent-color: var(--accent); cursor: pointer; }
         .precision-badge {
-            min-height: 38px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            color: var(--accent);
-            font-weight: 900;
+            min-height: 46px; display: inline-flex; align-items: center; justify-content: center;
+            border: 2px solid var(--line); border-radius: var(--radius); color: var(--accent); font-weight: 900; font-size: 1.1rem;
         }
 
-        .expanded-history-list {
-            display: grid;
-            gap: 10px;
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+        @media (max-width: 960px) {
+            .main-wrapper { grid-template-columns: 1fr; }
+            .site-footer { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; width: 100%; }
         }
-
-        .expanded-history-list .history-item {
-            grid-template-columns: minmax(0, 1fr) 38px;
-        }
-
-        ::-webkit-scrollbar {
-            width: 7px;
-            height: 7px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--line-strong);
-            border-radius: 999px;
-        }
-
-        @media (max-width: 860px) {
-            .main-wrapper {
-                grid-template-columns: 1fr;
-            }
-
-            .history-panel {
-                min-height: auto;
-            }
-        }
-
-        @media (max-width: 620px) {
-            .page-shell {
-                width: min(100% - 22px, 1180px);
-                padding-top: 22px;
-            }
-
-            .topbar,
-            .site-footer {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .top-actions,
-            .footer-links {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
-            .unit-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-
-            .quick-swap {
-                width: 100%;
-                margin: 0 0 16px;
-            }
-
-            .history-actions {
-                justify-content: flex-start;
-            }
-
-            .panel-heading {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .segmented {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 640px) {
+            .page-shell { padding: 20px 0; }
+            .topbar { flex-direction: column; align-items: flex-start; }
+            .unit-row { grid-template-columns: 1fr; gap: 0; }
+            .quick-swap { width: 100%; margin: 0 0 24px; }
+            .segmented { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -641,11 +415,11 @@
         <header class="topbar">
             <div class="brand-block">
                 <h1>Unit Matrix</h1>
-                <p class="tagline">Fast unit and number-system converter, tuned for daily use.</p>
+                <p class="tagline">Market-grade, precise unit conversion tool.</p>
             </div>
             <div class="top-actions">
-                <button type="button" class="icon-btn" onclick="openModal('historyModal')" title="Expanded history" aria-label="Expanded history">H</button>
-                <button type="button" class="icon-btn" onclick="openModal('settingsModal')" title="Settings" aria-label="Settings">&#9881;</button>
+                <button type="button" class="icon-btn" onclick="openModal('historyModal')" title="History">H</button>
+                <button type="button" class="icon-btn" onclick="openModal('settingsModal')" title="Settings">&#9881;</button>
             </div>
         </header>
 
@@ -654,7 +428,7 @@
                 <div class="panel-heading">
                     <div>
                         <h2>Converter</h2>
-                        <p class="panel-subtitle">Choose a category then enter a value.</p>
+                        <p class="panel-subtitle">Select the category and enter the value of source.</p>
                     </div>
                 </div>
 
@@ -667,32 +441,33 @@
                         <select name="category" id="category" onchange="updateDropdowns(false)">
                             <option value="length" {% if remember_cat == 'length' %}selected{% endif %}>Length</option>
                             <option value="weight" {% if remember_cat == 'weight' %}selected{% endif %}>Weight</option>
+                            <option value="volume" {% if remember_cat == 'volume' %}selected{% endif %}>Volume & Liquid</option>
                             <option value="temp" {% if remember_cat == 'temp' %}selected{% endif %}>Temperature</option>
+                            <option value="time" {% if remember_cat == 'time' %}selected{% endif %}>Time</option>
+                            <option value="speed" {% if remember_cat == 'speed' %}selected{% endif %}>Speed & Velocity</option>
                             <option value="num" {% if remember_cat == 'num' %}selected{% endif %}>Number Systems</option>
                         </select>
                     </div>
 
                     <div class="field">
                         <label for="val_input">Value</label>
-                        <input type="text" name="value" id="val_input" placeholder="Enter your value..." value="{{ remember_val }}" required maxlength="256" oninput="enforceLimits(true)">
+                        <input type="text" name="value" id="val_input" placeholder="Enter the value..." value="{{ remember_val }}" required maxlength="256" oninput="enforceLimits(true)">
                     </div>
 
                     <div class="unit-row">
                         <div class="field">
-                            <label for="from_unit">From</label>
+                            <label for="from_unit">Source</label>
                             <select name="from_unit" id="from_unit" onchange="enforceLimits(true)"></select>
                         </div>
-
-                        <button type="button" class="quick-swap" onclick="quickSwap()" title="Swap units" aria-label="Swap units">&#8644;</button>
-
+                        <button type="button" class="quick-swap" onclick="quickSwap()" title="Swap target">&#8644;</button>
                         <div class="field">
-                            <label for="to_unit">To</label>
+                            <label for="to_unit">Target</label>
                             <select name="to_unit" id="to_unit"></select>
                         </div>
                     </div>
 
                     <p id="client_error" class="client-error" role="alert"></p>
-                    <button type="submit" class="convert-btn">Convert</button>
+                    <button type="submit" class="convert-btn">Show result</button>
                 </form>
 
                 {% if error %}
@@ -711,7 +486,7 @@
                 <div class="panel-heading">
                     <div>
                         <h2>History</h2>
-                        <p class="panel-subtitle">Latest 10 conversions</p>
+                        <p class="panel-subtitle">Last 10 successful conversions</p>
                     </div>
                     <div class="history-actions">
                         <button type="button" class="ghost-btn" onclick="openModal('historyModal')">Expand</button>
@@ -733,56 +508,57 @@
                         <div class="history-item">
                             <div class="history-content">
                                 <span class="history-label">{{ item.category }}</span>
-                                <span class="history-meta">{{ item.input_val }} {{ item.from_label }} to {{ item.to_label }}</span>
+                                <span class="history-meta">{{ item.input_val }} {{ item.from_label }} &#8594; {{ item.to_label }}</span>
                                 <span class="history-value">{{ item.output_val }}</span>
                             </div>
-                            <button type="button" class="copy-btn" onclick="copyResult({{ item.output_val|tojson }}, this)" title="Copy result" aria-label="Copy result">C</button>
+                            <button type="button" class="copy-btn" onclick="copyResult({{ item.output_val|tojson }}, this)" title="Copy Result">C</button>
                         </div>
                         {% endfor %}
                     {% else %}
-                        <p class="empty-state">No recent conversions.</p>
+                        <p class="empty-state">No entries in the log.</p>
                     {% endif %}
                 </div>
             </aside>
         </section>
 
         <footer class="site-footer">
-            <span>UnitMatrix V2.0 is completely made by OpenAI's CODEX with prompts engineered by Swapnil Karki. Built with Flask, HTML, CSS, and vanilla JavaScript.</span>
+            <div class="footer-brand">
+                <span class="brand-name">UnitMatrix</span>
+                <span class="brand-version">V3.0</span>
+            </div>
+            <div class="footer-desc">
+                Made for daily use with strict accuracy. Architecture built by Gemini & Prompts by Swapnil Karki.
+            </div>
             <div class="footer-links">
-                <a class="footer-link" href="https://github.com/Moodiekiller1" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.02c-3.2.7-3.88-1.38-3.88-1.38-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18.92-.26 1.9-.38 2.88-.39.98.01 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.07.78 2.15v3.04c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
-                    </svg>
-                    Reach out to the dev
-                </a>
-                <a class="footer-link" href="https://www.instagram.com/known_as_swapnil/" target="_blank" rel="noopener noreferrer">Instagram</a>
-                <a class="footer-link" href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">MDN</a>
+                <a class="footer-link" href="https://github.com/Moodiekiller1" target="_blank" rel="noopener noreferrer">Github of dev</a>
+                <a class="footer-link" href="https://www.instagram.com/known_as_swapnil/" target="_blank" rel="noopener noreferrer">Instagram of dev</a>
+                <a class="footer-link" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">Gemini</a>
             </div>
         </footer>
     </main>
 
-    <div class="modal-backdrop" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-backdrop" id="settingsModal" role="dialog">
         <div class="modal-card">
             <div class="modal-header">
                 <div>
-                    <h2 id="settingsTitle">Settings</h2>
-                    <p>Theme and conversion preferences stay saved in this browser.</p>
+                    <h2>Converter Config</h2>
+                    <p>Preferences cached locally in client browser.</p>
                 </div>
-                <button type="button" class="modal-close" onclick="closeModal('settingsModal')" aria-label="Close settings">&times;</button>
+                <button type="button" class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="settings-grid">
                     <section class="settings-card">
-                        <h3>Theme</h3>
+                        <h3>Themes</h3>
                         <div class="segmented" id="themeControls">
-                            <button type="button" data-theme-choice="dark" onclick="setThemeChoice('dark')">Dark</button>
-                            <button type="button" data-theme-choice="light" onclick="setThemeChoice('light')">Light</button>
+                            <button type="button" data-theme-choice="dark" onclick="setThemeChoice('dark')">Dark (Pro)</button>
+                            <button type="button" data-theme-choice="light" onclick="setThemeChoice('light')">Light (Pro)</button>
+                            <button type="button" data-theme-choice="Matrix" onclick="setThemeChoice('Matrix')">Matrix</button>
                             <button type="button" data-theme-choice="system" onclick="setThemeChoice('system')">System</button>
                         </div>
                     </section>
-
                     <section class="settings-card">
-                        <h3>Rounding Precision</h3>
+                        <h3>Digit Precision</h3>
                         <div class="range-row">
                             <input type="range" id="precision_range" min="0" max="8" step="1" value="{{ precision }}" oninput="setPrecision(this.value)">
                             <span class="precision-badge" id="precision_value">{{ precision }}</span>
@@ -793,30 +569,30 @@
         </div>
     </div>
 
-    <div class="modal-backdrop" id="historyModal" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+    <div class="modal-backdrop" id="historyModal" role="dialog">
         <div class="modal-card">
             <div class="modal-header">
                 <div>
-                    <h2 id="historyTitle">Expanded History</h2>
-                    <p>Up to 30 recent successful conversions.</p>
+                    <h2>Full History</h2>
+                    <p>Maximum 30 recent conversions.</p>
                 </div>
-                <button type="button" class="modal-close" onclick="closeModal('historyModal')" aria-label="Close history">&times;</button>
+                <button type="button" class="modal-close" onclick="closeModal('historyModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="expanded-history-list">
+                <div class="history-items-box" style="max-height: 100%;">
                     {% if full_history %}
                         {% for item in full_history %}
                         <div class="history-item">
                             <div class="history-content">
                                 <span class="history-label">{{ item.category }}</span>
-                                <span class="history-meta">{{ item.input_val }} {{ item.from_label }} to {{ item.to_label }}</span>
+                                <span class="history-meta">{{ item.input_val }} {{ item.from_label }} &#8594; {{ item.to_label }}</span>
                                 <span class="history-value">{{ item.output_val }}</span>
                             </div>
-                            <button type="button" class="copy-btn" onclick="copyResult({{ item.output_val|tojson }}, this)" title="Copy result" aria-label="Copy result">C</button>
+                            <button type="button" class="copy-btn" onclick="copyResult({{ item.output_val|tojson }}, this)">C</button>
                         </div>
                         {% endfor %}
                     {% else %}
-                        <p class="empty-state">No saved conversions yet.</p>
+                        <p class="empty-state">No saved logs.</p>
                     {% endif %}
                 </div>
             </div>
@@ -830,19 +606,14 @@
         const rememberTo = {{ remember_to|tojson }};
         const maxNumericChars = 80;
         const maxNumberSystemChars = 256;
-        const maxDecimalDigits = 18;
+        const maxDecimalDigits = 24;
 
-        function getCurrentThemeChoice() {
-            return localStorage.getItem('unitmatrix-theme') || 'dark';
-        }
+        function getCurrentThemeChoice() { return localStorage.getItem('unitmatrix-theme') || 'dark'; }
 
         function applyTheme(choice) {
-            const resolvedChoice = choice === 'system'
-                ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
-                : choice;
+            const resolvedChoice = choice === 'system' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : choice;
             document.body.dataset.theme = resolvedChoice;
-
-            document.querySelectorAll('[data-theme-choice]').forEach((button) => {
+            document.querySelectorAll('[data-theme-choice]').forEach(button => {
                 button.classList.toggle('is-active', button.dataset.themeChoice === choice);
             });
         }
@@ -858,31 +629,44 @@
             document.getElementById('precision_hidden').value = precision;
             document.getElementById('precision_range').value = precision;
             document.getElementById('precision_value').textContent = precision;
-            document.querySelectorAll('.utility_precision').forEach((input) => {
-                input.value = precision;
-            });
+            document.querySelectorAll('.utility_precision').forEach(input => input.value = precision);
+        }
+
+        function buildSelectOptions(selectElement, data, targetValue, cat) {
+            selectElement.innerHTML = '';
+
+            if (cat === 'speed') {
+                const groupHr = document.createElement('optgroup'); groupHr.label = "Per Hour Formats";
+                const groupSec = document.createElement('optgroup'); groupSec.label = "Per Second Formats";
+
+                Object.entries(data.units).forEach(([value, label]) => {
+                    const opt = new Option(label, value);
+                    opt.selected = value === targetValue;
+                    if (value.endsWith('_h')) groupHr.appendChild(opt);
+                    else groupSec.appendChild(opt);
+                });
+                selectElement.appendChild(groupHr);
+                selectElement.appendChild(groupSec);
+            } else {
+                Object.entries(data.units).forEach(([value, label]) => {
+                    const opt = new Option(label, value);
+                    opt.selected = value === targetValue;
+                    selectElement.add(opt);
+                });
+            }
         }
 
         function updateDropdowns(isInitialLoad) {
             const cat = document.getElementById('category').value;
             const fromSelect = document.getElementById('from_unit');
             const toSelect = document.getElementById('to_unit');
-            const categoryData = unitData[cat] || unitData.length;
-
-            fromSelect.innerHTML = '';
-            toSelect.innerHTML = '';
+            const categoryData = unitData[cat];
 
             const targetFrom = isInitialLoad && cat === rememberCat ? rememberFrom : categoryData.default_from;
             const targetTo = isInitialLoad && cat === rememberCat ? rememberTo : categoryData.default_to;
 
-            Object.entries(categoryData.units).forEach(([value, label]) => {
-                const fromOption = new Option(label, value);
-                const toOption = new Option(label, value);
-                fromOption.selected = value === targetFrom;
-                toOption.selected = value === targetTo;
-                fromSelect.add(fromOption);
-                toSelect.add(toOption);
-            });
+            buildSelectOptions(fromSelect, categoryData, targetFrom, cat);
+            buildSelectOptions(toSelect, categoryData, targetTo, cat);
 
             if (!isInitialLoad) {
                 document.getElementById('val_input').value = '';
@@ -903,9 +687,7 @@
             error.classList.add('is-visible');
         }
 
-        function decimalDigitCount(value) {
-            return (value.match(/\d/g) || []).length;
-        }
+        function decimalDigitCount(value) { return (value.match(/\d/g) || []).length; }
 
         function enforceLimits(showErrors) {
             const cat = document.getElementById('category').value;
@@ -915,72 +697,42 @@
             let message = '';
 
             if (cat === 'num') {
-                if (fromUnit === 'bin') {
-                    value = value.replace(/[^01]/g, '');
-                } else if (fromUnit === 'dec') {
-                    value = value.replace(/[^0-9]/g, '');
-                } else if (fromUnit === 'hex') {
-                    value = value.replace(/[^0-9a-fA-F]/g, '');
-                }
-
-                if (value.length > maxNumberSystemChars) {
-                    value = value.slice(0, maxNumberSystemChars);
-                    message = 'Value too large.';
-                }
+                if (fromUnit === 'bin') value = value.replace(/[^01]/g, '');
+                else if (fromUnit === 'oct') value = value.replace(/[^0-7]/g, '');
+                else if (fromUnit === 'dec') value = value.replace(/[^0-9]/g, '');
+                else if (fromUnit === 'hex') value = value.replace(/[^0-9a-fA-F]/g, '');
+                if (value.length > maxNumberSystemChars) { value = value.slice(0, maxNumberSystemChars); message = 'Data string exceeds processing limit.'; }
             } else {
-                const isTemp = cat === 'temp';
-                const negative = isTemp && value.startsWith('-') ? '-' : '';
-                if (/^-?(?:\d+(?:\.\d*)?|\.\d+)e[+-]?\d+$/i.test(value)) {
-                    message = 'Scientific notation is not supported.';
-                }
+                const isSigned = cat === 'temp' || cat === 'speed';
+                const negative = isSigned && value.startsWith('-') ? '-' : '';
+                if (/^-?(?:\d+(?:\.\d*)?|\.\d+)e[+-]?\d+$/i.test(value)) message = 'Scientific notation blocked.';
                 value = value.replace(/[^0-9.]/g, '');
                 const parts = value.split('.');
-                if (parts.length > 2) {
-                    value = `${parts[0]}.${parts.slice(1).join('')}`;
-                }
+                if (parts.length > 2) value = `${parts[0]}.${parts.slice(1).join('')}`;
                 value = negative + value;
 
                 if (value.length > maxNumericChars || decimalDigitCount(value) > maxDecimalDigits) {
                     value = value.slice(0, maxNumericChars);
-                    message = message || 'Value too large.';
+                    message = message || 'Numeric limits exceeded.';
                 }
             }
 
             inputField.value = value;
-            if (message && showErrors) {
-                showClientError(message);
-            } else if (!message) {
-                clearClientError();
-            }
+            if (message && showErrors) showClientError(message);
+            else if (!message) clearClientError();
             return !message;
         }
 
         function validateBeforeSubmit() {
-            if (!enforceLimits(true)) {
-                return false;
-            }
+            if (!enforceLimits(true)) return false;
             const cat = document.getElementById('category').value;
             const value = document.getElementById('val_input').value.trim();
 
-            if (!value) {
-                showClientError('Please enter a value.');
-                return false;
-            }
-            if (cat !== 'num' && /^-?(?:\d+(?:\.\d*)?|\.\d+)e[+-]?\d+$/i.test(value)) {
-                showClientError('Scientific notation is not supported.');
-                return false;
-            }
-            if (cat !== 'num' && decimalDigitCount(value) > maxDecimalDigits) {
-                showClientError('Value too large.');
-                return false;
-            }
-            if (cat === 'num' && value.length > maxNumberSystemChars) {
-                showClientError('Value too large.');
-                return false;
-            }
-
-            clearClientError();
-            return true;
+            if (!value) { showClientError('Input required.'); return false; }
+            if (cat !== 'num' && /^-?(?:\d+(?:\.\d*)?|\.\d+)e[+-]?\d+$/i.test(value)) { showClientError('Scientific notation blocked.'); return false; }
+            if (cat !== 'num' && decimalDigitCount(value) > maxDecimalDigits) { showClientError('Value too large for standard matrix.'); return false; }
+            if (cat === 'num' && value.length > maxNumberSystemChars) { showClientError('Data array bounds exceeded.'); return false; }
+            clearClientError(); return true;
         }
 
         function quickSwap() {
@@ -990,78 +742,51 @@
             fromSelect.value = toSelect.value;
             toSelect.value = oldFrom;
             enforceLimits(true);
-
-            if (document.getElementById('val_input').value.trim() && validateBeforeSubmit()) {
-                document.getElementById('main_converter_form').submit();
-            }
+            if (document.getElementById('val_input').value.trim() && validateBeforeSubmit()) document.getElementById('main_converter_form').submit();
         }
 
         function copyResult(textToCopy, button) {
             navigator.clipboard.writeText(String(textToCopy)).then(() => {
                 const originalText = button.textContent;
                 button.textContent = 'OK';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 1100);
+                setTimeout(() => button.textContent = originalText, 1100);
             }).catch(() => {
                 const originalText = button.textContent;
                 button.textContent = '!';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 1100);
+                setTimeout(() => button.textContent = originalText, 1100);
             });
         }
 
         function syncUtilityForm() {
-            document.querySelectorAll('.utility_cat').forEach((input) => input.value = document.getElementById('category').value);
-            document.querySelectorAll('.utility_from').forEach((input) => input.value = document.getElementById('from_unit').value);
-            document.querySelectorAll('.utility_to').forEach((input) => input.value = document.getElementById('to_unit').value);
-            document.querySelectorAll('.utility_val').forEach((input) => input.value = document.getElementById('val_input').value);
-            document.querySelectorAll('.utility_precision').forEach((input) => input.value = document.getElementById('precision_hidden').value);
+            document.querySelectorAll('.utility_cat').forEach(input => input.value = document.getElementById('category').value);
+            document.querySelectorAll('.utility_from').forEach(input => input.value = document.getElementById('from_unit').value);
+            document.querySelectorAll('.utility_to').forEach(input => input.value = document.getElementById('to_unit').value);
+            document.querySelectorAll('.utility_val').forEach(input => input.value = document.getElementById('val_input').value);
+            document.querySelectorAll('.utility_precision').forEach(input => input.value = document.getElementById('precision_hidden').value);
         }
 
-        function openModal(id) {
-            document.getElementById(id).classList.add('is-open');
-            document.body.classList.add('modal-open');
-        }
-
+        function openModal(id) { document.getElementById(id).classList.add('is-open'); document.body.classList.add('modal-open'); }
         function closeModal(id) {
             document.getElementById(id).classList.remove('is-open');
-            if (!document.querySelector('.modal-backdrop.is-open')) {
-                document.body.classList.remove('modal-open');
-            }
+            if (!document.querySelector('.modal-backdrop.is-open')) document.body.classList.remove('modal-open');
         }
 
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                document.querySelectorAll('.modal-backdrop.is-open').forEach((modal) => closeModal(modal.id));
-            }
+            if (event.key === 'Escape') document.querySelectorAll('.modal-backdrop.is-open').forEach(modal => closeModal(modal.id));
         });
-
-        document.querySelectorAll('.modal-backdrop').forEach((modal) => {
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeModal(modal.id);
-                }
-            });
+        document.querySelectorAll('.modal-backdrop').forEach(modal => {
+            modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(modal.id); });
         });
-
         window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
-            if (getCurrentThemeChoice() === 'system') {
-                applyTheme('system');
-            }
+            if (getCurrentThemeChoice() === 'system') applyTheme('system');
         });
 
         window.onload = function() {
             updateDropdowns(true);
             applyTheme(getCurrentThemeChoice());
-
             const savedPrecision = localStorage.getItem('unitmatrix-precision');
-            if (savedPrecision !== null) {
-                setPrecision(savedPrecision);
-            } else {
-                setPrecision({{ precision|tojson }});
-            }
+            if (savedPrecision !== null) setPrecision(savedPrecision);
+            else setPrecision({{ precision|tojson }});
         };
     </script>
 </body>
